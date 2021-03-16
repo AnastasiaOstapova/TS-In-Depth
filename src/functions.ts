@@ -1,5 +1,5 @@
 import { Category } from "./enums";
-import { Book } from "./interfaces";
+import { Book, LibMgrCallback } from "./interfaces";
 import { BookOrUndefined, BookProperties } from "./types";
 
 showHello("greeting", "TypeScript");
@@ -222,7 +222,7 @@ export function printBook(book: Book): void {
 
 export function getProperty<TObject, TKey extends keyof TObject>(book: TObject, prop: TKey): TObject[TKey] | string {
     if (typeof book[prop] === "function") {
-        return book[prop][name];
+        return book[prop]["name"];
     }
 
     return book[prop];
@@ -230,4 +230,45 @@ export function getProperty<TObject, TKey extends keyof TObject>(book: TObject, 
 
 export function purge<T>(inventory: Array<T>): T[] {
     return inventory.slice(2);
+}
+
+export function getBooksByCategory(category: Category, callback: LibMgrCallback): void {
+    setTimeout(() => {
+        try {
+            const titles = getBookTitlesByCategory(category);
+
+            if (titles.length > 0)
+                callback(null, titles);
+            else
+                throw new Error("No books found");
+        } catch (error) {
+            callback(error, null);
+        }
+    }, 2000);
+}
+
+export function logCategorySearch(err: Error, titles: string[]): void {
+    if (err)
+        console.log(`Error message: ${err.message}`);
+    else
+        console.log(titles);
+}
+
+export function getBooksByCategoryPromise(category: Category): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+        setTimeout(() => {
+            const titles = getBookTitlesByCategory(category);
+
+            if (titles.length > 0)
+                resolve(titles);
+            else
+                reject("No books found");
+        }, 2000);
+    });
+}
+
+export async function logSearchResults(category: Category): Promise<void> {
+    const titles = await getBooksByCategoryPromise(category);
+
+    console.log(titles);
 }

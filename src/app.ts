@@ -1,7 +1,7 @@
 import { Category } from "./enums";
 import { Book, Logger, Author, Librarian, Magazine } from "./interfaces";
 import { BookRequiredFields, PersonBook, UpdatedBook, СreateCustomerFunctionType } from "./types";
-import { createCustomer, getProperty, purge } from "./functions";
+import { createCustomer, getBooksByCategory, getBooksByCategoryPromise, getProperty, logCategorySearch, logSearchResults, purge } from "./functions";
 import { UniversityLibrarian, RefBook, ReferenceItem, Shelf } from "./classes";
 import type { Library } from "./classes";
 import Encyclopedia from "./classes/encyclopedia";
@@ -226,3 +226,51 @@ console.log(u2);
 
 const e = new Encyclopedia(4, "CSS sheets", 2021, 5);
 e.printItem();
+
+// TASK 08.05
+const u3 = new UniversityLibrarian();
+u3.name = "Jane";
+u3.assistCustomer("Boris");
+console.log(u3);
+
+// TASK 08.06
+
+const u4 = new UniversityLibrarian();
+u4.name = "Makintosh";
+console.log(u4.name);
+u4.assistCustomer("Mike");
+console.log(u4);
+
+// TASK 08.07
+
+const e1 = new Encyclopedia(5, "TS", 2021, 8);
+e1.copies = 10;
+// e1.copies = 0;
+// e1.copies = 1.1;
+
+// TASK 09.01
+
+/*console.log("START");
+getBooksByCategory(Category.JavaScript, logCategorySearch);
+getBooksByCategory(Category.Software, logCategorySearch);
+console.log("FINISH");*/
+
+// TASK 09.02
+
+/*console.log("START");
+getBooksByCategoryPromise(Category.JavaScript)
+    .then(titles => { console.log(titles); return titles.length; })
+    .then(numOfBooks => console.log(numOfBooks))
+    .catch(err => console.log(err));
+getBooksByCategoryPromise(Category.Software)
+    .then(titles => console.log(titles))
+    .catch(err => console.log(err));
+console.log("FINISH");*/
+
+// TASK 09.03
+
+console.log("START");
+logSearchResults(Category.JavaScript);
+logSearchResults(Category.Software)
+    .catch(err => console.log(err));
+console.log("FINISH");

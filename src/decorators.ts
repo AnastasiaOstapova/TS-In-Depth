@@ -64,8 +64,77 @@ export function logMethod(target: any, methodName: string, descriptor: PropertyD
     descriptor.value = function (...args: any) {
         const indexes = target[key];
 
+        if (Array.isArray(indexes)) {
+            args.forEach((arg, index) => {
+                if (indexes.includes(index)) {
+                    console.log(`Method: ${methodName}, ParamIndex: ${index}, ParamValue: ${arg}`);
+                }
+            });
+        }
 
+        return original.apply(this, args);
     }
+
+    return descriptor;
+}
+
+function makeProperty<T>(
+    prototype: any,
+    propertyName: string,
+    getTransformer: (value: any) => T,
+    setTransformer: (value: any) => T
+) {
+    const values = new Map<any, T>();
+
+    Object.defineProperty(prototype, propertyName, {
+        set(firstValue: any) {
+            Object.defineProperty(this, propertyName, {
+                get() {
+                    if (getTransformer) {
+                        return getTransformer(values.get(this));
+                    } else {
+                        values.get(this);
+                    }
+                },
+                set(value: any) {
+                    if (setTransformer) {
+                        values.set(this, setTransformer(value));
+                    } else {
+                        values.set(this, value);
+                    }
+                },
+                enumerable: true
+            });
+
+            this[propertyName] = firstValue;
+        },
+
+        enumerable: true,
+        configurable: true
+    });
+}
+
+export function format(pref: string = "Mr./Mrs.") {
+    return function (target: any, propertyName: string) {
+        makeProperty(
+            target,
+            propertyName,
+            value => `${pref} ${value}`,
+            value => value
+        )
+    }
+}
+
+export function positiveInteger(target: any, methodName: string, descriptor: PropertyDescriptor) {
+    const originalSet = descriptor.set;
+
+    descriptor.set = function (value: number) {
+        if (value < 1 || !Number.isInteger(value)) {
+            throw new Error("Invalid value");
+        }
+
+        originalSet.call(this, value);
+    };
 
     return descriptor;
 }
