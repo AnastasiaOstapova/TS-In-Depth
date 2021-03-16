@@ -1,7 +1,7 @@
 import { Category } from "./enums";
 import { Book, Logger, Author, Librarian, Magazine } from "./interfaces";
 import { BookRequiredFields, PersonBook, UpdatedBook, СreateCustomerFunctionType } from "./types";
-import { createCustomer, getBooksByCategory, getBooksByCategoryPromise, getProperty, logCategorySearch, logSearchResults, purge } from "./functions";
+import { bookTitleTransform, checkoutBooks, createCustomer, createCustomerID, getAllBooks, getBookAuthorByIndex, getBookById, getBooksByCategory, getBooksByCategoryPromise, getBookTitlesByCategory, getProperty, getTitles, logBookTitles, logCategorySearch, logFirstAvailable, logSearchResults, purge } from "./functions";
 import { UniversityLibrarian, RefBook, ReferenceItem, Shelf } from "./classes";
 import type { Library } from "./classes";
 import Encyclopedia from "./classes/encyclopedia";
@@ -12,6 +12,59 @@ function showHello(divName: string, name: string) {
     const elt = document.getElementById(divName);
     elt.innerText = `Hello from ${name}`;
 }
+
+// TASK 02.01
+
+logFirstAvailable(getAllBooks());
+logBookTitles(getBookTitlesByCategory(Category.JavaScript));
+console.log(getBookAuthorByIndex(3));
+
+// TASK 03.01
+
+const myID: string = createCustomerID("Ann", 10);
+console.log(myID);
+
+let idGenerator: (name: string, id: number) => string;
+idGenerator = (name: string, id: number) => `${id} - ${name}`;
+idGenerator = createCustomerID;
+console.log(idGenerator("Boris", 20));
+
+const o = {
+    name: "Ann",
+    work: function () { return 1; }
+}
+
+// TASK 03.02
+
+createCustomer("Anna");
+createCustomer("Anna", 25);
+createCustomer("Anna", 30, "London");
+
+console.log(getBookTitlesByCategory());
+logFirstAvailable();
+
+console.log(getBookById(1));
+
+const myBooks = checkoutBooks("Anna", 1, 2, 4);
+console.log(myBooks);
+const myBooks2 = checkoutBooks("Anna", ...[1, 2, 4]);
+
+// Task 03.03
+
+console.log(getTitles(1, true));
+console.log(getTitles(false));
+
+// TASK 03.04
+
+console.log(bookTitleTransform("TypeScript"));
+// console.log(bookTitleTransform(100));
+
+let a: number | undefined; // в строгом режиме для переменных без инизиализации;
+let b!: number; // аналогичная запись
+
+a = 10;
+a = 0;
+a = null;
 
 // TASK 04.01
 

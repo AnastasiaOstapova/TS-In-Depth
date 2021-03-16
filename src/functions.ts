@@ -64,29 +64,8 @@ export function calcTotalPages(): bigint {
     }, 0n);
 }
 
-// TASK 02.01
-
-logFirstAvailable(getAllBooks());
-logBookTitles(getBookTitlesByCategory(Category.JavaScript));
-console.log(getBookAuthorByIndex(3));
-
 export function createCustomerID(name: string, id: number): string {
     return `${id} - ${name}`;
-}
-
-// TASK 03.01
-
-const myID: string = createCustomerID("Ann", 10);
-console.log(myID);
-
-let idGenerator: (name: string, id: number) => string;
-idGenerator = (name: string, id: number) => `${id} - ${name}`;
-idGenerator = createCustomerID;
-console.log(idGenerator("Boris", 20));
-
-const o = {
-    name: "Ann",
-    work: function () { return 1; }
 }
 
 
@@ -133,21 +112,6 @@ export function checkoutBooks(customer: string, ...bookIDs: number[]): string[] 
 type someFuncTYpe = (a: number) => string;
 const f: someFuncTYpe = a => `ololo ${a}`;
 
-// TASK 03.02
-
-createCustomer("Anna");
-createCustomer("Anna", 25);
-createCustomer("Anna", 30, "London");
-
-console.log(getBookTitlesByCategory());
-logFirstAvailable();
-
-console.log(getBookById(1));
-
-const myBooks = checkoutBooks("Anna", 1, 2, 4);
-console.log(myBooks);
-const myBooks2 = checkoutBooks("Anna", ...[1, 2, 4]);
-
 export function getTitles(author: string): string[];
 export function getTitles(available: boolean): string[];
 export function getTitles(id: number, available: boolean): string[];
@@ -179,11 +143,6 @@ export function getTitles(...args: any[]) {
     return [];
 }
 
-// Task 03.03
-
-console.log(getTitles(1, true));
-console.log(getTitles(false));
-
 export function assertStringValue(val: any): asserts val is string {
     if (typeof val !== "string")
         throw new Error("value should have been a string");
@@ -194,18 +153,6 @@ export function bookTitleTransform(title: any): string {
 
     return [...title].reverse().join("");
 }
-
-// TASK 03.04
-
-console.log(bookTitleTransform("TypeScript"));
-// console.log(bookTitleTransform(100));
-
-let a: number | undefined; // в строгом режиме для переменных без инизиализации;
-let b!: number; // аналогичная запись
-
-a = 10;
-a = 0;
-a = null;
 
 export function printBook(book: Book): void {
     console.log(`${book.title} by ${book.author}`);
